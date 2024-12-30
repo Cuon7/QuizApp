@@ -1,11 +1,13 @@
 import { Link } from "react-router-dom";
 import React, { useState } from 'react';
+import { useAuth } from "../../contexts/auth.context";
 
 const Header: React.FC = () => {
-  const [isAuthenticated, setIsAuthenticated] = useState<boolean>(true);
-  const onLogout = () => {
-    setIsAuthenticated(false);
-  }
+  const { isAuthenticated, logout } = useAuth();
+
+    const onLogout = () => {
+        logout();
+    }
   return (
     <header className="flex justify-between items-center px-4 bg-blue-500 text-white">
       <div className="flex items-center space-x-2">
@@ -18,7 +20,7 @@ const Header: React.FC = () => {
             <Link to="/" className="nav-link block p-4 hover:bg-blue-700">Home</Link>
           </li>
           <li className="nav-item">
-            <Link to="/manager/quizzes" className="nav-link block p-4 hover:bg-blue-700">Quizzes</Link>
+            <Link to="/quizzes" className="nav-link block p-4 hover:bg-blue-700">Quizzes</Link>
           </li>
           <li className="nav-item">
             <Link to="/manager/dashboard" className="nav-link block p-4 hover:bg-blue-700">Management</Link>

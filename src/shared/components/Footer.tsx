@@ -30,7 +30,7 @@ const Footer: React.FC = () => {
               <Link to="/" className="nav-link hover:bg-blue-700">Home</Link>
             </li>
             <li className="nav-item">
-              <Link to="/manager/quizzes" className="nav-link hover:bg-blue-700">Quizzes</Link>
+              <Link to="/quizzes" className="nav-link hover:bg-blue-700">Quizzes</Link>
             </li>
             <li className="nav-item">
               <Link to="/manager/dashboard" className="nav-link hover:bg-blue-700">Management</Link>

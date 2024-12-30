@@ -6,13 +6,7 @@ interface TeamCardProps {
   image: string;
 }
 
-const TeamCard: React.FC<TeamCardProps> = ({ name, job, image }) => {
-  const formatDuration = (mins: number) => {
-    const hours = Math.floor(mins / 60);
-    const minutes = mins % 60;
-    return hours ? `${hours}h${minutes > 0 ? `${minutes}m` : ''}` : `${minutes}m`;
-  };
-
+const TeamCard: React.FC<TeamCardProps> = ({ name, job, image }) => {  
   return (
     <div className="border rounded-lg shadow-lg p-4">
       <img src={image} alt={name} className="rounded-md mb-4" />

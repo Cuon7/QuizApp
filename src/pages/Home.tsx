@@ -1,56 +1,56 @@
 import React, { useEffect, useState } from 'react';
 import QuizCard from '../shared/components/QuizCard';
+import { useNavigate } from 'react-router-dom';
 // Call api here later
 const fetchQuizData = async () => {
   return [
     {
+      id: 1,
       title: "Capitals of Country",
       description: "Test your knowledge of country capitals",
       duration: 15,
       image: require('../assets/images/map.jpeg'),
+      questions: [
+        { id: 1, question: 'Question 1?', options: ['Answer 1', 'Answer 2', 'Answer 3', 'Answer 4'], answer: 'Answer 1' },
+        { id: 2, question: 'Question 1?', options: ['Answer 1', 'Answer 2', 'Answer 3', 'Answer 4'], answer: 'Answer 2' },
+      ],
     },
     {
+      id: 2,
       title: "Capitals of Country",
       description: "Test your knowledge of country capitals",
       duration: 15,
       image: require('../assets/images/inventions.png'),
+      questions: [
+        { id: 1, question: 'Question 1?', options: ['Answer 1', 'Answer 2', 'Answer 3', 'Answer 4'], answer: 'Answer 1' },
+        { id: 2, question: 'Question 1?', options: ['Answer 1', 'Answer 2', 'Answer 3', 'Answer 4'], answer: 'Answer 2' },
+      ],
     },
     {
+      id: 3,
       title: "Capitals of Country",
       description: "Test your knowledge of country capitals",
       duration: 15,
       image: require('../assets/images/capitals.jpeg'),
+      questions: [
+        { id: 1, question: 'Question 1?', options: ['Answer 1', 'Answer 2', 'Answer 3', 'Answer 4'], answer: 'Answer 1' },
+        { id: 2, question: 'Question 1?', options: ['Answer 1', 'Answer 2', 'Answer 3', 'Answer 4'], answer: 'Answer 2' },
+      ],
     },
   ];
 };
 
 const Home: React.FC = () => {
+  const navigate = useNavigate();
+  const handleNavigate = () => {
+    navigate('/quizzes');
+  };
   const [quizData, setQuizData] = useState<any>([]);
 
   useEffect(() => {
     // Fetch the quiz data when the component mounts
     fetchQuizData().then(data => setQuizData(data));
   }, []);
-  // const quizData: any = [
-  //   {
-  //     title: "Capitals of Country",
-  //     description: "Test your knowledge of country capitals",
-  //     duration: 15,
-  //     image: require('../assets/images/map.jpeg'),
-  //   },
-  //   {
-  //     title: "Capitals of Country",
-  //     description: "Test your knowledge of country capitals",
-  //     duration: 15,
-  //     image: require('../assets/images/inventions.png'),
-  //   },
-  //   {
-  //     title: "Capitals of Country",
-  //     description: "Test your knowledge of country capitals",
-  //     duration: 15,
-  //     image: require('../assets/images/capitals.jpeg'),
-  //   },
-  // ];
   return (
     <div>
       {/* Hero Section */}
@@ -62,7 +62,7 @@ const Home: React.FC = () => {
             <p className="text-lg text-gray-600 mb-6">
             Text here for testing
             </p>
-            <button className="bg-blue-500 text-white px-6 py-2 rounded-md">Take a Quiz</button>
+            <button onClick={handleNavigate} className="bg-blue-500 text-white px-6 py-2 rounded-md">Take a Quiz</button>
           </div>
 
           {/* Right Image */}
@@ -82,11 +82,13 @@ const Home: React.FC = () => {
       <div className="max-w-6xl mx-auto grid grid-cols-1 md:grid-cols-3 gap-8">
       {quizData?.map((quiz: any, index: any) => (
         <QuizCard
-          key={index} // Unique key for each item in the list
+          id = {quiz.id}
+          key={quiz.id} // Unique key for each item in the list
           title={quiz.title}
           description={quiz.description}
           duration={quiz.duration}
           image={quiz.image}
+          questions={quiz.questions}
         />
       ))}
         </div>
