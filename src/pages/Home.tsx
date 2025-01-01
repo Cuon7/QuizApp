@@ -1,55 +1,34 @@
-import React, { useEffect, useState } from 'react';
+import React, { useCallback, useEffect, useState } from 'react';
 import QuizCard from '../shared/components/QuizCard';
 import { useNavigate } from 'react-router-dom';
-// Call api here later
-const fetchQuizData = async () => {
-  return [
-    {
-      id: 1,
-      title: "Capitals of Country",
-      description: "Test your knowledge of country capitals",
-      duration: 15,
-      image: require('../assets/images/map.jpeg'),
-      questions: [
-        { id: 1, question: 'Question 1?', options: ['Answer 1', 'Answer 2', 'Answer 3', 'Answer 4'], answer: 'Answer 1' },
-        { id: 2, question: 'Question 1?', options: ['Answer 1', 'Answer 2', 'Answer 3', 'Answer 4'], answer: 'Answer 2' },
-      ],
-    },
-    {
-      id: 2,
-      title: "Capitals of Country",
-      description: "Test your knowledge of country capitals",
-      duration: 15,
-      image: require('../assets/images/inventions.png'),
-      questions: [
-        { id: 1, question: 'Question 1?', options: ['Answer 1', 'Answer 2', 'Answer 3', 'Answer 4'], answer: 'Answer 1' },
-        { id: 2, question: 'Question 1?', options: ['Answer 1', 'Answer 2', 'Answer 3', 'Answer 4'], answer: 'Answer 2' },
-      ],
-    },
-    {
-      id: 3,
-      title: "Capitals of Country",
-      description: "Test your knowledge of country capitals",
-      duration: 15,
-      image: require('../assets/images/capitals.jpeg'),
-      questions: [
-        { id: 1, question: 'Question 1?', options: ['Answer 1', 'Answer 2', 'Answer 3', 'Answer 4'], answer: 'Answer 1' },
-        { id: 2, question: 'Question 1?', options: ['Answer 1', 'Answer 2', 'Answer 3', 'Answer 4'], answer: 'Answer 2' },
-      ],
-    },
-  ];
-};
-
+import { QuizService } from '../services/quiz.service';
 const Home: React.FC = () => {
+  const [loading, setLoading] = useState(true);
   const navigate = useNavigate();
   const handleNavigate = () => {
     navigate('/quizzes');
   };
   const [quizData, setQuizData] = useState<any>([]);
+  
+  const fetchQuizData = useCallback(async () => {
+          try {
+              const response: any = await QuizService.getAll();
+  
+              if (response) {
+                  setInterval(() => {
+                      setLoading(false);
+                  }, 0);
+              }
+  
+              setQuizData(response);
+          } catch (error) {
+              console.error('Error:', error);
+          }
+      }, []);
 
   useEffect(() => {
     // Fetch the quiz data when the component mounts
-    fetchQuizData().then(data => setQuizData(data));
+    fetchQuizData();
   }, []);
   return (
     <div>
@@ -81,15 +60,15 @@ const Home: React.FC = () => {
       <h2 className="text-center text-3xl font-bold mb-6">QUIZZES</h2>
       <div className="max-w-6xl mx-auto grid grid-cols-1 md:grid-cols-3 gap-8">
       {quizData?.map((quiz: any, index: any) => (
-        <QuizCard
-          id = {quiz.id}
-          key={quiz.id} // Unique key for each item in the list
-          title={quiz.title}
-          description={quiz.description}
-          duration={quiz.duration}
-          image={quiz.image}
-          questions={quiz.questions}
-        />
+       <QuizCard
+       id={quiz.id}
+       key={quiz.id}
+       title={quiz.title}
+       description={quiz.description}
+       duration={quiz.duration}
+       image={quiz.thumbnailUrl ? require(`../assets/images/${quiz.thumbnailUrl}`) : null}
+       questions={quiz.questions}
+     />
       ))}
         </div>
       </section>

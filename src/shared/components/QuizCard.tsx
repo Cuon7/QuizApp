@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useEffect, useState } from 'react';
 import Quizzes from './Quizzes';
 import { useNavigate } from 'react-router-dom';
 
@@ -11,7 +11,19 @@ interface QuizCardProps {
   questions: []
 }
 
-const QuizCard: React.FC<QuizCardProps> = ({ id, title, description, duration, image, questions }) => {
+const QuizCard: React.FC<QuizCardProps> = ({ id, title, description, duration, image }) => {
+  const [userId, setUserId] = useState<string | null>(null);
+  useEffect(() => {
+    const userInformation = localStorage.getItem('userInformation');
+    if (userInformation) {
+      try {
+        const user = JSON.parse(JSON.parse(userInformation));
+        setUserId(user.id);
+      } catch (error) {
+        console.error('Error parsing user information:', error);
+      }
+    }
+  }, []);
   const navigate = useNavigate();
   const formatDuration = (mins: number) => {
     const hours = Math.floor(mins / 60);
@@ -20,7 +32,7 @@ const QuizCard: React.FC<QuizCardProps> = ({ id, title, description, duration, i
   };
 
   const handleQuizSelect = () => {
-    navigate('/quiz/' + id, { state: { title, questions } });
+    navigate('/quiz/' + id, { state: { id, userId } });
   };
 
   return (

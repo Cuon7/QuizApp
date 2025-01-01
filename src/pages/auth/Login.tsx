@@ -22,9 +22,7 @@ const Login = () => {
 
     const onSubmit = async (values: any) => {
         try {
-            // const response = await AuthService.login(values); // Call API later
-            let response: any = {};
-            response.data = { userName: "admin" };
+            const response = await AuthService.login(values); // Call API later            
             if (response) {
                 login(response);
                 console.log('Login success');
